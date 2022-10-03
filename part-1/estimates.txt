@@ -1,0 +1,15 @@
+Multi-AZ, multi-Region RDS
+
+1-Minimum RTO for a single AZ outage
+Given that DB config is multi AZ, an AZ outage will have no impact and RTO is 0
+
+2-Minimum RTO for a single region outage
+Given that DB config is multi Region, a Region outage will have a small RTO. The read-replica will have to be promoted to primary.
+RTO is dependent on many parameters, it is about 5 minutes
+
+3-Minimum RPO for a single AZ outage
+Given that DB config is multi AZ, an AZ outage will have no impact and RPO is 0
+
+4-Minimum RPO for a single region outage
+Given that DB config is multi Region, a Region outage will have also a small RPO. It is the time needed to detect region failure and promoting the read-replica.
+RPO is also dependent on many parameters, it is about 5 minutes. Note that we have a daily backup.
