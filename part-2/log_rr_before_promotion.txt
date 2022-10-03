@@ -1,0 +1,153 @@
+➜  .ssh ssh -i ounitech-ec2-uw2.pem ec2-user@ec2-35-91-239-172.us-west-2.compute.amazonaws.com 
+The authenticity of host 'ec2-35-91-239-172.us-west-2.compute.amazonaws.com (35.91.239.172)' can't be established.
+ED25519 key fingerprint is SHA256:besokM3BcxDRVnQWTS0EtUGShacroKy7gpqw3ptwxVc.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'ec2-35-91-239-172.us-west-2.compute.amazonaws.com' (ED25519) to the list of known hosts.
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+[ec2-user@ip-10-2-1-233 ~]$ ifconfig 
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+        inet 10.2.1.233  netmask 255.255.255.0  broadcast 10.2.1.255
+        inet6 fe80::d0:61ff:fe1d:1e8d  prefixlen 64  scopeid 0x20<link>
+        ether 02:d0:61:1d:1e:8d  txqueuelen 1000  (Ethernet)
+        RX packets 58326  bytes 83338374 (79.4 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 22701  bytes 1275033 (1.2 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 48  bytes 3888 (3.7 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 48  bytes 3888 (3.7 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+[ec2-user@ip-10-2-1-233 ~]$ sudo yum install mysql
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+Resolving Dependencies
+--> Running transaction check
+---> Package mariadb.x86_64 1:5.5.68-1.amzn2 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=============================================================================================================================================================================
+ Package                               Arch                                 Version                                           Repository                                Size
+=============================================================================================================================================================================
+Installing:
+ mariadb                               x86_64                               1:5.5.68-1.amzn2                                  amzn2-core                               8.8 M
+
+Transaction Summary
+=============================================================================================================================================================================
+Install  1 Package
+
+Total download size: 8.8 M
+Installed size: 49 M
+Is this ok [y/d/N]: y
+Downloading packages:
+mariadb-5.5.68-1.amzn2.x86_64.rpm                                                                                                                     | 8.8 MB  00:00:00     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : 1:mariadb-5.5.68-1.amzn2.x86_64                                                                                                                           1/1 
+  Verifying  : 1:mariadb-5.5.68-1.amzn2.x86_64                                                                                                                           1/1 
+
+Installed:
+  mariadb.x86_64 1:5.5.68-1.amzn2                                                                                                                                            
+
+Complete!
+[ec2-user@ip-10-2-1-233 ~]$ mysql -u admin -p -h ounitech-rds.ci7hkybd2jrv.us-west-2.rds.amazonaws.com
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MySQL connection id is 71
+Server version: 8.0.28 Source distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MySQL [(none)]> statsu
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'statsu' at line 1
+MySQL [(none)]> status;
+--------------
+mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
+
+Connection id:		71
+Current database:	
+Current user:		admin@10.2.1.233
+SSL:			Not in use
+Current pager:		stdout
+Using outfile:		''
+Using delimiter:	;
+Server:			MySQL
+Server version:		8.0.28 Source distribution
+Protocol version:	10
+Connection:		ounitech-rds.ci7hkybd2jrv.us-west-2.rds.amazonaws.com via TCP/IP
+Server characterset:	utf8mb4
+Db     characterset:	utf8mb4
+Client characterset:	utf8mb3
+Conn.  characterset:	utf8mb3
+TCP port:		3306
+Uptime:			4 hours 17 min 31 sec
+
+Threads: 9  Questions: 11651  Slow queries: 0  Opens: 225  Flush tables: 3  Open tables: 144  Queries per second avg: 0.754
+--------------
+
+MySQL [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| udacity            |
++--------------------+
+5 rows in set (0.01 sec)
+
+MySQL [(none)]> use udacity;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MySQL [udacity]> show tables;
++-------------------+
+| Tables_in_udacity |
++-------------------+
+| customers         |
+| users             |
++-------------------+
+2 rows in set (0.00 sec)
+
+MySQL [udacity]> select * from users;
++----+---------+---------------------+
+| id | name    | created_at          |
++----+---------+---------------------+
+|  1 | mejdi   | 2022-10-03 12:49:08 |
+|  2 | khadija | 2022-10-03 12:49:20 |
+|  3 | maryem  | 2022-10-03 12:49:29 |
+|  4 | abdou   | 2022-10-03 12:49:35 |
+|  5 | bechir  | 2022-10-03 12:49:43 |
++----+---------+---------------------+
+5 rows in set (0.00 sec)
+
+MySQL [udacity]> delete from users where id=5;
+ERROR 1290 (HY000): The MySQL server is running with the --read-only option so it cannot execute this statement
+MySQL [udacity]> update users set name='henia' where id=5;
+ERROR 1290 (HY000): The MySQL server is running with the --read-only option so it cannot execute this statement
+MySQL [udacity]> nsert into customers(name) VALUES('issa');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'nsert into customers(name) VALUES('issa')' at line 1
+MySQL [udacity]> insert into users(name) VALUES('issa');
+ERROR 1290 (HY000): The MySQL server is running with the --read-only option so it cannot execute this statement
+MySQL [udacity]> exit
+Bye
+[ec2-user@ip-10-2-1-233 ~]$ 
